@@ -4,10 +4,11 @@ import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { addDays, format } from 'date-fns'
+import { addDays } from 'date-fns'
 import { ResultDisplay } from '@/components/telraam/ResultDisplay'
 import { useState } from 'react'
-import { CalendarDays, Clock, User } from 'lucide-react'
+import { Clock, User } from 'lucide-react'
+import { DatePicker } from '@/components/ui/date-picker'
 
 export type FormData = z.infer<typeof formSchema>
 
@@ -112,17 +113,15 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 name="tglPenahanan"
                 render={({ field }) => (
                   <FormItem className="animate-in slide-in-from-right duration-300 delay-100">
-                    <FormLabel className="flex items-center gap-1.5">
-                      <CalendarDays className="h-4 w-4 text-muted-foreground" />
+                    <FormLabel>
                       Tanggal Penahanan
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        type="date"
-                        {...field}
-                        value={format(field.value, 'yyyy-MM-dd')}
-                        onChange={(e) => field.onChange(new Date(e.target.value))}
+                      <DatePicker 
+                        date={field.value} 
+                        setDate={field.onChange}
                         className="transition-all duration-300 focus:border-primary/50 focus:ring-primary/20"
+                        showIcon={false}
                       />
                     </FormControl>
                     <FormMessage />
