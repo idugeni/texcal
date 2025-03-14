@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://texcal.vercel.app/sitemap.xml

@@ -1,22 +1,21 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CalculatorForm, FormData } from '@/components/kalkulator/CalculatorForm'
-import { HistoryDisplay } from '@/components/kalkulator/HistoryDisplay'
+import { useState, useEffect } from 'react'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { CalculatorForm, FormData } from '@/components/telraam/CalculatorForm'
+import { HistoryDisplay } from '@/components/telraam/HistoryDisplay'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-export default function KalkulatorPage() {
+export default function TelraamPage() {
   const router = useRouter()
   const [calculationHistory, setCalculationHistory] = useState<Array<{
     id: string;
     date: Date;
     data: FormData;
     result: Date;
-  }>>([])
+  }>>([]);
 
   // Load calculation history from localStorage on component mount
   useEffect(() => {
@@ -53,19 +52,16 @@ export default function KalkulatorPage() {
     localStorage.setItem('calculationHistory', JSON.stringify(updatedHistory))
 
     // Navigate to detail page
-    router.push(`/kalkulator/detail?id=${newHistoryItem.id}`)
+    router.push(`/telraam/detail?id=${newHistoryItem.id}`)
   }
 
   const clearHistory = () => {
     setCalculationHistory([])
     localStorage.removeItem('calculationHistory')
-    toast.success("Riwayat Dihapus", {
-      description: "Semua riwayat perhitungan telah dihapus",
-    })
   }
 
   const loadFromHistory = (historyItem: typeof calculationHistory[0]) => {
-    router.push(`/kalkulator/detail?id=${historyItem.id}`)
+    router.push(`/telraam/detail?id=${historyItem.id}`)
   }
 
   return (
@@ -73,26 +69,33 @@ export default function KalkulatorPage() {
       <Header />
       
       <div className="flex-1 container max-w-5xl mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold text-center mb-8">Kalkulator Masa Pidana</h1>
+        <h1 className="text-3xl font-bold text-center mb-2 animate-in fade-in-50 duration-500 bg-clip-text bg-gradient-to-r from-primary to-primary/70 text-transparent">Telraam Masa Pidana</h1>
+        <p className="text-center text-muted-foreground mb-8 animate-in fade-in-50 duration-500 delay-200">Perhitungan akurat untuk masa pidana dan potensi pembebasan</p>
         
-        <Tabs defaultValue="calculator" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="calculator">Kalkulator</TabsTrigger>
-            <TabsTrigger value="history">Riwayat Perhitungan</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="calculator" className="space-y-8">
-            <CalculatorForm onCalculationComplete={handleCalculationComplete} />
-          </TabsContent>
-          
-          <TabsContent value="history">
-            <HistoryDisplay 
-              history={calculationHistory}
-              onClearHistory={clearHistory}
-              loadFromHistory={loadFromHistory}
-            />
-          </TabsContent>
-        </Tabs>
+        <div className="bg-card rounded-xl border border-border/50 shadow-sm p-1 mb-8 animate-in fade-in-50 duration-500 delay-300">
+          <Tabs defaultValue="calculator" className="w-full">
+            <TabsList className="w-full grid grid-cols-2 mb-4">
+              <TabsTrigger value="calculator" className="data-[state=active]:bg-primary/10">
+                Kalkulator
+              </TabsTrigger>
+              <TabsTrigger value="history" className="data-[state=active]:bg-primary/10">
+                Riwayat
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="calculator" className="p-4">
+              <CalculatorForm onCalculationComplete={handleCalculationComplete} />
+            </TabsContent>
+            
+            <TabsContent value="history" className="p-4">
+              <HistoryDisplay 
+                history={calculationHistory} 
+                onClearHistory={clearHistory} 
+                loadFromHistory={loadFromHistory} 
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
       
       <Footer />

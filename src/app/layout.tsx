@@ -16,7 +16,29 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "TexCal - Kalkulator Masa Pidana",
-  description: "Aplikasi untuk menghitung masa pidana dengan cepat dan akurat",
+  description: "Aplikasi untuk menghitung masa pidana dengan cepat dan akurat. Solusi digital untuk perhitungan masa pidana yang efisien dan tepat.",
+  keywords: ["kalkulator masa pidana", "perhitungan pidana", "hukum pidana", "alat hitung pidana", "texcal"],
+  authors: [{ name: "TexCal Team" }],
+  creator: "TexCal",
+  publisher: "TexCal",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://texcal.vercel.app",
+    title: "TexCal - Kalkulator Masa Pidana",
+    description: "Aplikasi untuk menghitung masa pidana dengan cepat dan akurat. Solusi digital untuk perhitungan masa pidana yang efisien dan tepat.",
+    siteName: "TexCal"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TexCal - Kalkulator Masa Pidana",
+    description: "Aplikasi untuk menghitung masa pidana dengan cepat dan akurat",
+    creator: "@texcal"
+  },
+  alternates: {
+    canonical: "https://texcal.vercel.app"
+  },
+  metadataBase: new URL("https://texcal.vercel.app")
 };
 
 export default function RootLayout({
