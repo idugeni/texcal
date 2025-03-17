@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import { PDFReport } from '@/components/PDFReport'
+import { generateExcelReport } from '@/components/ExcelReport'
 import { Card, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Download, ArrowLeft } from 'lucide-react'
@@ -96,7 +97,14 @@ function DetailContent() {
           <DetailContentComponent data={data} result={result} />
           
           <CardFooter className="bg-muted/20 p-6">
-            <div className="w-full flex justify-end">
+            <div className="w-full flex justify-end gap-3">
+              <Button 
+                variant="outline" 
+                onClick={() => generateExcelReport({ data, result })}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Unduh Excel
+              </Button>
               <PDFDownloadLink
                 document={<PDFReport data={data} result={result} />}
                 fileName={`laporan-${data.namaNapi.toLowerCase().replace(/\s+/g, '-')}.pdf`}

@@ -4,11 +4,10 @@ import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { addDays } from 'date-fns'
-import { ResultDisplay } from '@/components/telraam/ResultDisplay'
-import { useState } from 'react'
+import { addDaysWithLeapYearAdjustment } from '@/lib/utils'
 import { Clock, User } from 'lucide-react'
 import { DatePicker } from '@/components/ui/date-picker'
+import { useViewportAnimation } from '@/hooks/use-viewport-animation'
 
 export type FormData = z.infer<typeof formSchema>
 
@@ -35,8 +34,12 @@ interface CalculatorFormProps {
 }
 
 export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
-  const [showResult, setShowResult] = useState(false)
-  const [result, setResult] = useState<Date | null>(null)
+  // Animation hooks for each section with staggered delays
+  const formAnimation = useViewportAnimation({ threshold: 0.1, initiallyVisible: true });
+  const wbpSectionAnimation = useViewportAnimation({ threshold: 0.1, delay: 100, initiallyVisible: true });
+  const masaPidanaSectionAnimation = useViewportAnimation({ threshold: 0.1, delay: 300, initiallyVisible: true });
+  const remisiSectionAnimation = useViewportAnimation({ threshold: 0.1, delay: 500, initiallyVisible: true });
+  const buttonAnimation = useViewportAnimation({ threshold: 0.1, delay: 700, initiallyVisible: true });
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -65,11 +68,10 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
       const remisiDays = (data.remisi.bulan * 30) + data.remisi.hari
       // Subtract remission days
       const finalDays = Math.max(0, twoThirdsDays - remisiDays)
-      // Calculate release date
-      const releaseDate = addDays(data.tglPenahanan, finalDays)
+      // Calculate release date using the leap year adjusted function
+      const releaseDate = addDaysWithLeapYearAdjustment(data.tglPenahanan, finalDays)
 
-      setResult(releaseDate)
-      setShowResult(true)
+      // Call onCalculationComplete to redirect to detail page
       onCalculationComplete(data, releaseDate)
     } catch (error) {
       console.error('Error calculating release date:', error)
@@ -81,17 +83,23 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in-50 duration-500">
+    <div 
+      ref={formAnimation.ref as React.RefObject<HTMLDivElement>}
+      className={`space-y-8 transition-all duration-700 ${formAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
+          <div 
+            ref={wbpSectionAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 ${wbpSectionAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+          >
             <h3 className="text-lg font-semibold mb-4 text-primary flex items-center">Data WBP</h3>
             <div className="space-y-6">
               <FormField
                 control={form.control}
                 name="namaNapi"
                 render={({ field }) => (
-                  <FormItem className="animate-in slide-in-from-left duration-300">
+                  <FormItem className="animate-in fade-in-50 duration-300">
                     <FormLabel className="flex items-center gap-1.5">
                       <User className="h-4 w-4 text-muted-foreground" />
                       Nama WBP
@@ -112,7 +120,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 control={form.control}
                 name="tglPenahanan"
                 render={({ field }) => (
-                  <FormItem className="animate-in slide-in-from-right duration-300 delay-100">
+                  <FormItem className="animate-in fade-in-50 duration-300 delay-100">
                     <FormLabel>
                       Tanggal Penahanan
                     </FormLabel>
@@ -131,7 +139,10 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
             </div>
           </div>
 
-          <div className="p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
+          <div 
+            ref={masaPidanaSectionAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 ${masaPidanaSectionAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+          >
             <h3 className="text-lg font-semibold mb-4 text-primary flex items-center">
               <Clock className="h-5 w-5 mr-2 text-primary/70" />
               Masa Pidana
@@ -197,7 +208,10 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
             </div>
           </div>
 
-          <div className="p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
+          <div 
+            ref={remisiSectionAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 ${remisiSectionAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+          >
             <h3 className="text-lg font-semibold mb-4 text-primary">Remisi</h3>
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -241,16 +255,19 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
             </div>
           </div>
 
-          <Button 
-            type="submit" 
-            className="w-full text-base py-6 animate-in fade-in-50 duration-300 delay-700 hover:scale-[1.02] transition-transform"
+          <div
+            ref={buttonAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`w-full transition-all duration-700 ${buttonAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
           >
-            Hitung Masa Pidana
-          </Button>
+            <Button 
+              type="submit" 
+              className="w-full text-base py-6 transition-colors hover:bg-primary/90"
+            >
+              Hitung Masa Pidana
+            </Button>
+          </div>
         </form>
       </Form>
-
-      {showResult && result && <ResultDisplay date={result} />}
     </div>
   )
 }

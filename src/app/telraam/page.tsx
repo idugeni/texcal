@@ -7,8 +7,12 @@ import { Footer } from '@/components/Footer'
 import { CalculatorForm, FormData } from '@/components/telraam/CalculatorForm'
 import { HistoryDisplay } from '@/components/telraam/HistoryDisplay'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useViewportAnimation } from '@/hooks/use-viewport-animation'
 
 export default function TelraamPage() {
+  // Animation hooks for tab content - initialize with isInView true to prevent disappearing content
+  const calculatorTabAnimation = useViewportAnimation({ threshold: 0.1, repeat: false, delay: 100, initiallyVisible: true })
+  const historyTabAnimation = useViewportAnimation({ threshold: 0.1, repeat: false, delay: 100, initiallyVisible: true })
   const router = useRouter()
   const [calculationHistory, setCalculationHistory] = useState<Array<{
     id: string;
@@ -84,15 +88,25 @@ export default function TelraamPage() {
             </TabsList>
             
             <TabsContent value="calculator" className="p-4">
-              <CalculatorForm onCalculationComplete={handleCalculationComplete} />
+              <div 
+                ref={calculatorTabAnimation.ref as React.RefObject<HTMLDivElement>}
+                className={`transition-all duration-700 ${calculatorTabAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
+              >
+                <CalculatorForm onCalculationComplete={handleCalculationComplete} />
+              </div>
             </TabsContent>
             
             <TabsContent value="history" className="p-4">
-              <HistoryDisplay 
-                history={calculationHistory} 
-                onClearHistory={clearHistory} 
-                loadFromHistory={loadFromHistory} 
-              />
+              <div 
+                ref={historyTabAnimation.ref as React.RefObject<HTMLDivElement>}
+                className={`transition-all duration-700 ${historyTabAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
+              >
+                <HistoryDisplay 
+                  history={calculationHistory} 
+                  onClearHistory={clearHistory} 
+                  loadFromHistory={loadFromHistory} 
+                />
+              </div>
             </TabsContent>
           </Tabs>
         </div>

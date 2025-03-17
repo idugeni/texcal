@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { id as idLocale } from 'date-fns/locale'
 import { Card, CardContent } from '@/components/ui/card'
 import { FormData } from '@/components/telraam/CalculatorForm'
+import { TimelineVisualization } from '@/components/telraam/TimelineVisualization'
 
 interface DetailContentProps {
   data: FormData;
@@ -22,6 +23,9 @@ export function DetailContent({ data, result }: DetailContentProps) {
           Tanggal ini adalah perkiraan berdasarkan perhitungan 2/3 masa pidana dikurangi remisi
         </p>
       </div>
+      
+      {/* Timeline Visualization */}
+      <TimelineVisualization data={data} result={result} />
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <Card className="border-primary/10">
