@@ -7,6 +7,7 @@ import { PDFReport } from '@/components/PDFReport'
 import { generateExcelReport } from '@/components/ExcelReport'
 import { Card, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Separator } from "@/components/ui/separator"
 import { Download, ArrowLeft } from 'lucide-react'
 import { FormData } from '@/components/telraam/CalculatorForm'
 import { Header } from '@/components/Header'
@@ -85,7 +86,7 @@ function DetailContent() {
       <div className="flex-1 container max-w-5xl mx-auto py-8 px-4">
         <div className="mb-6">
           <Link href="/telraam">
-            <Button variant="ghost" className="flex items-center text-primary">
+            <Button variant="secondary" className="flex items-center text-primary hover:bg-secondary/50">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Kembali ke Telraam
             </Button>
@@ -94,10 +95,11 @@ function DetailContent() {
         
         <Card className="border-2 border-primary/20 shadow-md">
           <DetailHeader data={data} date={historyItem.date} />
+          <Separator />
           <DetailContentComponent data={data} result={result} />
-          
-          <CardFooter className="bg-muted/20 p-6">
-            <div className="w-full flex justify-end gap-3">
+          <Separator />
+          <CardFooter className="px-6">
+            <div className="w-full flex justify-center gap-3">
               <Button 
                 variant="outline" 
                 onClick={() => generateExcelReport({ data, result })}

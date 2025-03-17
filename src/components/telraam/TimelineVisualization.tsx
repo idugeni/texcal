@@ -34,7 +34,7 @@ export function TimelineVisualization({ data, result }: TimelineVisualizationPro
   return (
     <Card className="border-primary/10 shadow-sm animate-in fade-in-50 duration-700">
       <CardContent className="pt-6 space-y-6">
-        <h3 className="text-lg font-semibold text-primary">Visualisasi Masa Pidana</h3>
+        <h3 className="text-lg font-semibold text-primary text-center">Visualisasi Masa Pidana</h3>
         
         <div className="space-y-6">
           {/* Timeline visualization */}

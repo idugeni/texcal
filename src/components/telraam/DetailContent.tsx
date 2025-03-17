@@ -15,7 +15,7 @@ export function DetailContent({ data, result }: DetailContentProps) {
   return (
     <CardContent className="space-y-6 pt-6">
       <div className="p-6 bg-primary/10 rounded-lg text-center">
-        <h3 className="text-lg font-semibold mb-2 text-muted-foreground">Tanggal Potensi Pembebasan</h3>
+        <h3 className="text-lg font-semibold mb-2 text-muted-foreground">Tanggal Pembebasan</h3>
         <p className="text-3xl font-bold text-primary">
           {format(result, 'EEEE, dd MMMM yyyy', { locale: idLocale })}
         </p>

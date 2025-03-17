@@ -35,11 +35,11 @@ interface CalculatorFormProps {
 
 export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
   // Animation hooks for each section with staggered delays
-  const formAnimation = useViewportAnimation({ threshold: 0.1, initiallyVisible: true });
-  const wbpSectionAnimation = useViewportAnimation({ threshold: 0.1, delay: 100, initiallyVisible: true });
-  const masaPidanaSectionAnimation = useViewportAnimation({ threshold: 0.1, delay: 300, initiallyVisible: true });
-  const remisiSectionAnimation = useViewportAnimation({ threshold: 0.1, delay: 500, initiallyVisible: true });
-  const buttonAnimation = useViewportAnimation({ threshold: 0.1, delay: 700, initiallyVisible: true });
+  const formAnimation = useViewportAnimation({ threshold: 0.2, repeat: true });
+  const wbpSectionAnimation = useViewportAnimation({ threshold: 0.2, delay: 200, repeat: true });
+  const masaPidanaSectionAnimation = useViewportAnimation({ threshold: 0.2, delay: 400, repeat: true });
+  const remisiSectionAnimation = useViewportAnimation({ threshold: 0.2, delay: 600, repeat: true });
+  const buttonAnimation = useViewportAnimation({ threshold: 0.2, delay: 800, repeat: true });
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -85,13 +85,13 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
   return (
     <div 
       ref={formAnimation.ref as React.RefObject<HTMLDivElement>}
-      className={`space-y-8 transition-all duration-700 ${formAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+      className={`space-y-8 transition-all duration-1000 ${formAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div 
             ref={wbpSectionAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 ${wbpSectionAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-700 ${wbpSectionAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
             <h3 className="text-lg font-semibold mb-4 text-primary flex items-center">Data WBP</h3>
             <div className="space-y-6">
@@ -141,7 +141,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
 
           <div 
             ref={masaPidanaSectionAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 ${masaPidanaSectionAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-700 ${masaPidanaSectionAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
             <h3 className="text-lg font-semibold mb-4 text-primary flex items-center">
               <Clock className="h-5 w-5 mr-2 text-primary/70" />
@@ -152,7 +152,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 control={form.control}
                 name="masaPidana.tahun"
                 render={({ field }) => (
-                  <FormItem className="animate-in fade-in-50 duration-300 delay-200">
+                  <FormItem className="animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-200">
                     <FormLabel>Tahun</FormLabel>
                     <FormControl>
                       <Input 
@@ -171,7 +171,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 control={form.control}
                 name="masaPidana.bulan"
                 render={({ field }) => (
-                  <FormItem className="animate-in fade-in-50 duration-300 delay-300">
+                  <FormItem className="animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-300">
                     <FormLabel>Bulan</FormLabel>
                     <FormControl>
                       <Input 
@@ -190,7 +190,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 control={form.control}
                 name="masaPidana.hari"
                 render={({ field }) => (
-                  <FormItem className="animate-in fade-in-50 duration-300 delay-400">
+                  <FormItem className="animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-400">
                     <FormLabel>Hari</FormLabel>
                     <FormControl>
                       <Input 
@@ -210,7 +210,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
 
           <div 
             ref={remisiSectionAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 ${remisiSectionAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+            className={`p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-md transition-all duration-700 ${remisiSectionAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
             <h3 className="text-lg font-semibold mb-4 text-primary">Remisi</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -218,7 +218,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 control={form.control}
                 name="remisi.bulan"
                 render={({ field }) => (
-                  <FormItem className="animate-in fade-in-50 duration-300 delay-500">
+                  <FormItem className="animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-500">
                     <FormLabel>Bulan</FormLabel>
                     <FormControl>
                       <Input 
@@ -237,7 +237,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
                 control={form.control}
                 name="remisi.hari"
                 render={({ field }) => (
-                  <FormItem className="animate-in fade-in-50 duration-300 delay-600">
+                  <FormItem className="animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-600">
                     <FormLabel>Hari</FormLabel>
                     <FormControl>
                       <Input 
@@ -257,7 +257,7 @@ export function CalculatorForm({ onCalculationComplete }: CalculatorFormProps) {
 
           <div
             ref={buttonAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`w-full transition-all duration-700 ${buttonAnimation.isInView ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full transition-all duration-1000 ${buttonAnimation.isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
           >
             <Button 
               type="submit" 

@@ -27,7 +27,7 @@ interface DetailHeaderProps {
 
 export function DetailHeader({ data, date }: DetailHeaderProps) {
   return (
-    <CardHeader className="bg-primary/5 p-6">
+    <CardHeader className="p-6">
       <div className="flex justify-between items-start gap-4">
         <div className="space-y-2">
           <CardTitle className="flex items-center text-2xl font-semibold text-primary">
@@ -43,7 +43,7 @@ export function DetailHeader({ data, date }: DetailHeaderProps) {
             </span>
           </CardDescription>
         </div>
-        <p className="text-sm text-muted-foreground bg-primary/5 px-3 py-1 rounded-md">
+        <p className="text-sm text-muted-foreground bg-secondary px-3 py-1 rounded-full">
           {format(date, 'dd/MM/yyyy • HH:mm', { locale: idLocale })}
         </p>
       </div>
